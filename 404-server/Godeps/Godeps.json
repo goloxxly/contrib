@@ -5,7 +5,7 @@
 	"Packages": [
 		"./..."
 	],
-	"Deps": [
+	"Deps": []
 		{
 			"ImportPath": "github.com/beorn7/perks/quantile",
 			"Rev": "4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9"

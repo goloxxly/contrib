@@ -20,8 +20,8 @@
 
 all: push
 
-TAG=1.3
-PREFIX?=gcr.io/google_containers/defaultbackend
+TAG=0.1.0
+PREFIX?=goloxxly/configurable-defaultbackend
 ARCH?=amd64
 GOLANG_VERSION=1.7
 TEMP_DIR:=$(shell mktemp -d)
@@ -34,17 +34,10 @@ container:
 	docker pull golang:$(GOLANG_VERSION)
 	docker run --rm -it -v $(PWD):/build golang:$(GOLANG_VERSION) /bin/bash -c "make -C /build server ARCH=$(ARCH)"
 
-	docker build --pull -t $(PREFIX)-$(ARCH):$(TAG) .
+	docker build --pull -t $(PREFIX):$(TAG) .
 
 push: container
-	gcloud docker -- push $(PREFIX)-$(ARCH):$(TAG)
-
-push-legacy: container
-ifeq ($(ARCH),amd64)
-	# Backward compatibility. TODO: deprecate this image tag
-	docker tag -f $(PREFIX)-$(ARCH):$(TAG) $(PREFIX):$(TAG)
-	gcloud docker -- push $(PREFIX):$(TAG)
-endif
+	docker push $(PREFIX):$(TAG)
 
 clean:
 	rm -f server
