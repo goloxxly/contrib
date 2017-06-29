@@ -25,12 +25,17 @@ import (
 )
 
 var port = flag.Int("port", 8080, "Port number to serve default backend 404 page.")
+var errorContent = os.Getenv("PAGE_CONTENT_404");
 
 func main() {
 	flag.Parse()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, "goloxxly default backend - 404")
+		var content = "goloxxly default backend - 404"
+		if len(errorContent) > 0 {
+			content = errorContent
+		}
+		fmt.Fprint(w, content)
 	})
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
